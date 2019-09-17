@@ -34,10 +34,13 @@ app.use("/users", userRoutes);
 app.use("/attendance", attendanceRoutes);
 
 const MONGO_ATLAS_PASSWORD = process.env.MONGO_ATLAS_PASSWORD;
+const MONGO_ATLAS_USERNAME = process.env.MONGO_ATLAS_USERNAME;
 
 // Mongoose configuration for database
 mongoose.connect(
-  "mongodb+srv://ahsanihsan:" +
+  "mongodb+srv://" +
+    MONGO_ATLAS_USERNAME +
+    ":" +
     MONGO_ATLAS_PASSWORD +
     "@poseidon-r5hbw.mongodb.net/test?retryWrites=true&w=majority"
 );
