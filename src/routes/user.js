@@ -68,9 +68,24 @@ router.get("/:id", (req, res, next) => {
 
 router.patch("/:id", (req, res, next) => {
   const id = req.params.id;
-  res.status(200).json({
-    message: "Handling patch request"
-  });
+  const updateOperation = {};
+  for (const userOps of req.body) {
+    updateOperation[userOps.propName] = userOps.value;
+  }
+  User.update({ _id: id }, { $set: updateOperation })
+    .exec()
+    .then(response => {
+      res.status(200).json({
+        success: true,
+        message: response
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    });
 });
 
 router.delete("/:id", (req, res, next) => {
