@@ -1,6 +1,8 @@
+// Packages here
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const bodyparser = require("body-parser");
 
 const productRoutes = require("./routes/shops");
 const userRoutes = require("./routes/user");
@@ -8,6 +10,8 @@ const attendanceRoutes = require("./routes/attendance");
 
 // Add dev dependencies here
 app.use(morgan("dev"));
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 
 //Add new controllers/routes in below chunk
 app.use("/shops", productRoutes);
