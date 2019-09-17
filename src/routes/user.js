@@ -1,24 +1,69 @@
 const express = require("express");
-
+const mongoose = require("mongoose");
 const router = express.Router();
 
+const User = require("../models/user");
+
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    message: "Handling incoming GET requests"
-  });
+  User.find({})
+    .exec()
+    .then(response => {
+      res.status(200).json({
+        success: true,
+        message: response
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: true,
+        message: error.message
+      });
+    });
 });
 
 router.post("/", (req, res, next) => {
-  res.status(200).json({
-    message: "Handling incoming POST requests"
+  const { full_name, phone_number, CNIC, role, address } = req.body;
+  const user = new User({
+    _id: new mongoose.Types.ObjectId(),
+    full_name,
+    phone_number,
+    CNIC,
+    role,
+    address
   });
+  user
+    .save()
+    .then(response => {
+      res.status(200).json({
+        success: true,
+        message: "User created successfuly",
+        user: response
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    });
 });
 
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
-  res.status(200).json({
-    message: "Handling incoming GET request for a single id"
-  });
+  User.findById(id)
+    .exec()
+    .then(response => {
+      res.status(200).json({
+        success: true,
+        message: response
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    });
 });
 
 router.patch("/:id", (req, res, next) => {
@@ -30,9 +75,20 @@ router.patch("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
   const id = req.params.id;
-  res.status(200).json({
-    message: "Handling delete request on a single id"
-  });
+  User.remove({ _id: id })
+    .exec()
+    .then(response => {
+      res.status(200).json({
+        success: true,
+        message: "Successfully deleted a user"
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    });
 });
 
 module.exports = router;
