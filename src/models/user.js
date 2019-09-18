@@ -6,7 +6,8 @@ const userSchema = mongoose.Schema({
   phone_number: String,
   CNIC: String,
   role: String,
-  address: String
+  address: String,
+  password: String
 });
 
 module.exports = mongoose.model("User", userSchema);

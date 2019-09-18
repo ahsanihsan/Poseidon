@@ -9,6 +9,8 @@ const productRoutes = require("./routes/shops");
 const userRoutes = require("./routes/user");
 const attendanceRoutes = require("./routes/attendance");
 
+const routesConstants = require("./constants/Routes");
+
 // Add dev dependencies here
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({ extended: false }));
@@ -29,9 +31,9 @@ app.use((req, res, next) => {
 });
 
 //Add new controllers/routes in below chunk
-app.use("/shops", productRoutes);
-app.use("/users", userRoutes);
-app.use("/attendance", attendanceRoutes);
+app.use(routesConstants.shops, productRoutes);
+app.use(routesConstants.users, userRoutes);
+app.use(routesConstants.attendance, attendanceRoutes);
 
 const MONGO_ATLAS_PASSWORD = process.env.MONGO_ATLAS_PASSWORD;
 const MONGO_ATLAS_USERNAME = process.env.MONGO_ATLAS_USERNAME;

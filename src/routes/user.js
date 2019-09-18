@@ -1,5 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const twilio = require("twilio")(
+  process.env.TWILIO_APP_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
 const router = express.Router();
 
 const User = require("../models/user");
@@ -22,14 +27,15 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { full_name, phone_number, CNIC, role, address } = req.body;
+  const { full_name, phone_number, CNIC, role, address, password } = req.body;
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
     full_name,
     phone_number,
     CNIC,
     role,
-    address
+    address,
+    password
   });
   user
     .save()
