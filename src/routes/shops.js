@@ -53,7 +53,7 @@ router.post("/", (req, res, next) => {
     .then(response => {
       const message =
         "Our marketing guy visited your shop please visit the below provided link and show him the QR so he can verify.\n";
-      const url = "\nhttps://localhost:61500/shops/qr/" + response._id;
+      const url = "\nhttp://ac839f17.ngrok.io/shops/qr/" + response._id;
       twilio.messages
         .create({
           body: message + url,

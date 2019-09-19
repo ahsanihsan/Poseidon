@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   CNIC: String,
   role: String,
   address: String,
-  password: String
+  password: String,
+  number_of_orders_completed: Number
 });
 
 module.exports = mongoose.model("User", userSchema);

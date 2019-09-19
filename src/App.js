@@ -53,6 +53,8 @@ mongoose.connect(
     "@poseidon-r5hbw.mongodb.net/test?retryWrites=true&w=majority"
 );
 
+mongoose.Promise = global.Promise;
+
 app.use((req, res, next) => {
   const error = new Error("Unable to fetch the record (not found)");
   error.status = 404;
