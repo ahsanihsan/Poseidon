@@ -4,6 +4,8 @@ const app = express();
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
 const mongoose = require("mongoose");
+const ejs = require("ejs");
+const fs = require("fs");
 
 const productRoutes = require("./routes/shops");
 const userRoutes = require("./routes/user");
@@ -13,8 +15,12 @@ const routesConstants = require("./constants/Routes");
 
 // Add dev dependencies here
 app.use(morgan("dev"));
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+
+// Setting libraries for QR Code generation
+app.set("view engine", "ejs");
+app.use(express.static("./QRCodes"));
 
 // Edit CORS configuration in below method
 app.use((req, res, next) => {
