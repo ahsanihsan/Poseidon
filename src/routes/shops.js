@@ -69,26 +69,26 @@ router.post("/", upload.single("shopImage"), (req, res, next) => {
       const message =
         "Our marketing guy visited your shop please visit the below provided link and show him the QR so he can verify.\n";
       const url = "\nhttp://ac839f17.ngrok.io/shops/qr/" + response._id;
-      // twilio.messages
-      //   .create({
-      //     body: message + url,
-      //     from: "+12396036783",
-      //     to: phone_number
-      //   })
-      // .then(message => {
-      res.status(200).json({
-        success: true,
-        message:
-          "Shop created successfuly, we have sent a URL to shop owner's phone. Please visit that link to scan the QR Code.",
-        shop: response
-      });
-      // })
-      // .catch(error => {
-      // res.status(500).json({
-      //   success: false,
-      //   message: error
-      // });
-      // });
+      twilio.messages
+        .create({
+          body: message + url,
+          from: "+12396036783",
+          to: phone_number
+        })
+        .then(message => {
+          res.status(200).json({
+            success: true,
+            message:
+              "Shop created successfuly, we have sent a URL to shop owner's phone. Please visit that link to scan the QR Code.",
+            shop: response
+          });
+        })
+        .catch(error => {
+          res.status(500).json({
+            success: false,
+            message: error
+          });
+        });
     })
     .catch(error => {
       res.status(500).json({
