@@ -6,6 +6,20 @@ const twilio = require("twilio")(
 );
 const qr = require("qr-image");
 const fs = require("fs");
+const multer = require("multer");
+
+const storageUnit = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().toISOString() + "_" + req.body.name + ".jpg");
+  }
+});
+
+const upload = multer({
+  storage: storageUnit
+});
 
 const router = express.Router();
 
@@ -28,7 +42,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", upload.single("shopImage"), (req, res, next) => {
   const {
     name,
     phone_number,
@@ -46,7 +60,8 @@ router.post("/", (req, res, next) => {
     rating,
     isVerified,
     longitude,
-    latitude
+    latitude,
+    shopImage: req.file.path
   });
   shop
     .save()
@@ -54,26 +69,26 @@ router.post("/", (req, res, next) => {
       const message =
         "Our marketing guy visited your shop please visit the below provided link and show him the QR so he can verify.\n";
       const url = "\nhttp://ac839f17.ngrok.io/shops/qr/" + response._id;
-      twilio.messages
-        .create({
-          body: message + url,
-          from: "+12396036783",
-          to: phone_number
-        })
-        .then(message => {
-          res.status(200).json({
-            success: true,
-            message:
-              "Shop created successfuly, we have sent a URL to shop owner's phone. Please visit that link to scan the QR Code.",
-            shop: response
-          });
-        })
-        .catch(error => {
-          res.status(500).json({
-            success: false,
-            message: error
-          });
-        });
+      // twilio.messages
+      //   .create({
+      //     body: message + url,
+      //     from: "+12396036783",
+      //     to: phone_number
+      //   })
+      // .then(message => {
+      res.status(200).json({
+        success: true,
+        message:
+          "Shop created successfuly, we have sent a URL to shop owner's phone. Please visit that link to scan the QR Code.",
+        shop: response
+      });
+      // })
+      // .catch(error => {
+      // res.status(500).json({
+      //   success: false,
+      //   message: error
+      // });
+      // });
     })
     .catch(error => {
       res.status(500).json({
@@ -169,6 +184,13 @@ router.post("/verify", (req, res, next) => {
         message: error.message
       });
     });
+});
+
+router.post("/upload", upload.single("shopImage"), (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    message: "Uploaded image succesfully"
+  });
 });
 
 router.delete("/:id", (req, res, next) => {

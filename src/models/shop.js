@@ -9,7 +9,8 @@ const shopSchema = mongoose.Schema({
   isVerified: Boolean,
   longitude: { type: Number, required: true },
   latitude: { type: Number, required: true },
-  shop_registered_by: String
+  shop_registered_by: String,
+  shopImage: { type: String, required: true }
 });
 
 module.exports = mongoose.model("Shop", shopSchema);

@@ -17,6 +17,7 @@ const routesConstants = require("./constants/Routes");
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+app.use("/uploads", express.static("uploads"));
 
 // Setting libraries for QR Code generation
 app.set("view engine", "ejs");
@@ -64,7 +65,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
-    message: err.message
+    message: err.message,
+    success: false
   });
 });
 
