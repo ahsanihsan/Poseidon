@@ -7,6 +7,7 @@ const twilio = require("twilio")(
 const qr = require("qr-image");
 const fs = require("fs");
 const multer = require("multer");
+const routesConstants = require("../constants/Routes");
 
 const storageUnit = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -67,8 +68,8 @@ router.post("/", upload.single("shopImage"), (req, res, next) => {
     .save()
     .then(response => {
       const message =
-        "Our marketing guy visited your shop please visit the below provided link and show him the QR so he can verify.\n";
-      const url = "\nhttp://ac839f17.ngrok.io/shops/qr/" + response._id;
+        "Our marketing guy visited your shop please visit the below provided link and show him the QR so he can verify.\n\n";
+      const url = routesConstants.base_url + "shops/qr/" + response._id;
       twilio.messages
         .create({
           body: message + url,
