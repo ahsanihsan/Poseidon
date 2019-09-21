@@ -112,4 +112,32 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 
+router.post("/login", (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  User.find({ email })
+    .exec()
+    .then(response => {
+      if (response) {
+        if (response.password === password) {
+          res.status(200).json({
+            success: true,
+            message: "Logged in successfully"
+          });
+        } else {
+          res.status(401).json({
+            success: true,
+            message: "Invalid password entered"
+          });
+        }
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        success: false,
+        message: "No User found against" + email + "."
+      });
+    });
+});
+
 module.exports = router;
