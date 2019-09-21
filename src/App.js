@@ -9,7 +9,7 @@ const fs = require("fs");
 
 const productRoutes = require("./routes/shops");
 const userRoutes = require("./routes/user");
-const attendanceRoutes = require("./routes/attendance");
+const chatRoutes = require("./routes/chats");
 
 const routesConstants = require("./constants/Routes");
 
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 //Add new controllers/routes in below chunk
 app.use(routesConstants.shops, productRoutes);
 app.use(routesConstants.users, userRoutes);
-app.use(routesConstants.attendance, attendanceRoutes);
+app.use(routesConstants.chats, chatRoutes);
 
 const MONGO_ATLAS_PASSWORD = process.env.MONGO_ATLAS_PASSWORD;
 const MONGO_ATLAS_USERNAME = process.env.MONGO_ATLAS_USERNAME;
